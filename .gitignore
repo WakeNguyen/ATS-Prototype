@@ -1,0 +1,16 @@
+node_modules/
+.next/
+.env
+.env.local
+.env*.local
+.env*
+!.env.example
+.backups/
+*.tmp
+.log
+npm-debug.log
+docs/testing/test data/
+docs/secrets/
+Claude outputs/
+scripts/social-group-titles/
+.vercel/

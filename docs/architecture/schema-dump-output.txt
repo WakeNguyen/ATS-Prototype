@@ -1,0 +1,298 @@
+=== TABLES trong schema sandbox ===
+[
+  'activity',
+  'activity_log',
+  'campaign_social_groups',
+  'campaigns',
+  'candidates',
+  'client_contacts',
+  'client_persons',
+  'clients',
+  'contact_points',
+  'interviews',
+  'jobs',
+  'onboarding_history',
+  'pending_cv_imports',
+  'reach_sourcing',
+  'social_group_urls'
+]
+
+=== TABLES trong schema public ===
+[
+  'activity',
+  'activity_log',
+  'campaign_social_groups',
+  'campaigns',
+  'candidates',
+  'client_contacts',
+  'client_persons',
+  'clients',
+  'contact_points',
+  'interviews',
+  'jobs',
+  'onboarding_history',
+  'pending_cv_imports',
+  'reach_sourcing',
+  'social_group_urls'
+]
+
+=== CỘT theo từng bảng (schema sandbox) ===
+
+-- activity --
+  id : uuid (nullable=NO, default=uuid_generate_v7())
+  notion_id : uuid (nullable=YES, default=-)
+  candidate_id : uuid (nullable=YES, default=-)
+  job_id : uuid (nullable=YES, default=-)
+  reach_sourcing_id : uuid (nullable=YES, default=-)
+  summary : text (nullable=NO, default=-)
+  current_stage : text (nullable=YES, default=-)
+  status : USER-DEFINED (nullable=YES, default=-)
+  result : text (nullable=YES, default=-)
+  priority : text (nullable=YES, default=-)
+  source_channel : text (nullable=YES, default=-)
+  reason_failed : text (nullable=YES, default=-)
+  note_failure_reason : text (nullable=YES, default=-)
+  note : text (nullable=YES, default=-)
+  assigned_to : ARRAY (nullable=YES, default=-)
+  parent_item_notion_id : uuid (nullable=YES, default=-)
+  parent_item_id : uuid (nullable=YES, default=-)
+  created_time : timestamp with time zone (nullable=YES, default=-)
+  last_updated : timestamp with time zone (nullable=YES, default=-)
+  display_number : integer (nullable=NO, default=-)
+  display_id : text (nullable=YES, default=-)
+  acquisition_type : text (nullable=YES, default=-)
+  planning_date : date (nullable=YES, default=-)
+  is_passive : boolean (nullable=YES, default=false)
+
+-- activity_log --
+  id : uuid (nullable=NO, default=gen_random_uuid())
+  application_id : uuid (nullable=YES, default=-)
+  action_type : text (nullable=YES, default=-)
+  note : text (nullable=YES, default=-)
+  result : text (nullable=YES, default=-)
+  action_date : timestamp with time zone (nullable=YES, default=now())
+  created_time : timestamp with time zone (nullable=YES, default=now())
+
+-- campaign_social_groups --
+  campaign_id : uuid (nullable=NO, default=-)
+  social_group_id : uuid (nullable=NO, default=-)
+
+-- campaigns --
+  id : uuid (nullable=NO, default=uuid_generate_v7())
+  notion_id : uuid (nullable=YES, default=-)
+  job_id : uuid (nullable=YES, default=-)
+  campaign_name : text (nullable=NO, default=-)
+  status : text (nullable=YES, default=-)
+  channel : text (nullable=YES, default=-)
+  post_language : text (nullable=YES, default=-)
+  post_image_url : text (nullable=YES, default=-)
+  content : text (nullable=YES, default=-)
+  execution_log : text (nullable=YES, default=-)
+  created_time : timestamp with time zone (nullable=YES, default=-)
+  last_updated : timestamp with time zone (nullable=YES, default=-)
+
+-- candidates --
+  id : uuid (nullable=NO, default=uuid_generate_v7())
+  notion_id : uuid (nullable=YES, default=-)
+  full_name : text (nullable=NO, default=-)
+  dob : date (nullable=YES, default=-)
+  address : text (nullable=YES, default=-)
+  source : text (nullable=YES, default=-)
+  prefix : text (nullable=YES, default=-)
+  cv_url : text (nullable=YES, default=-)
+  blocked : boolean (nullable=YES, default=false)
+  blacklist_note : text (nullable=YES, default=-)
+  notes : text (nullable=YES, default=-)
+  created_time : timestamp with time zone (nullable=YES, default=-)
+  last_updated : timestamp with time zone (nullable=YES, default=-)
+  display_number : integer (nullable=NO, default=-)
+  display_id : text (nullable=YES, default=-)
+  phones : ARRAY (nullable=YES, default=ARRAY[]::text[])
+  emails : ARRAY (nullable=YES, default=ARRAY[]::text[])
+  socials : jsonb (nullable=YES, default='[]'::jsonb)
+  all_contacts_text : text (nullable=YES, default=''::text)
+  cv_urls : jsonb (nullable=YES, default='[]'::jsonb)
+
+-- client_contacts --
+  id : uuid (nullable=NO, default=uuid_generate_v7())
+  notion_id : uuid (nullable=YES, default=-)
+  client_id : uuid (nullable=YES, default=-)
+  name : text (nullable=NO, default=-)
+  job_title : text (nullable=YES, default=-)
+  contact_value : text (nullable=YES, default=-)
+  type : text (nullable=YES, default=-)
+  is_primary : boolean (nullable=YES, default=false)
+  notes : text (nullable=YES, default=-)
+  created_time : timestamp with time zone (nullable=YES, default=now())
+  last_updated : timestamp with time zone (nullable=YES, default=now())
+
+-- client_persons --
+  id : uuid (nullable=NO, default=uuid_generate_v7())
+  display_number : integer (nullable=NO, default=nextval('client_persons_display_number_seq'::regclass))
+  client_id : uuid (nullable=NO, default=-)
+  full_name : text (nullable=NO, default=-)
+  job_title : text (nullable=YES, default='HR'::text)
+  department : text (nullable=YES, default=-)
+  is_primary : boolean (nullable=YES, default=false)
+  contact_points : jsonb (nullable=YES, default='[]'::jsonb)
+  notes : text (nullable=YES, default=-)
+  created_time : timestamp with time zone (nullable=YES, default=now())
+  last_updated : timestamp with time zone (nullable=YES, default=now())
+
+-- clients --
+  id : uuid (nullable=NO, default=uuid_generate_v7())
+  notion_id : uuid (nullable=YES, default=-)
+  name : text (nullable=NO, default=-)
+  location : text (nullable=YES, default=-)
+  status : text (nullable=YES, default=-)
+  tax_code : text (nullable=YES, default=-)
+  address : text (nullable=YES, default=-)
+  industry : text (nullable=YES, default=-)
+  created_time : timestamp with time zone (nullable=YES, default=-)
+  last_updated : timestamp with time zone (nullable=YES, default=-)
+  display_number : integer (nullable=NO, default=-)
+  display_id : text (nullable=YES, default=-)
+  branches : jsonb (nullable=YES, default='[]'::jsonb)
+
+-- contact_points --
+  id : uuid (nullable=NO, default=uuid_generate_v7())
+  notion_id : uuid (nullable=YES, default=-)
+  candidate_id : uuid (nullable=YES, default=-)
+  type : text (nullable=YES, default=-)
+  value : text (nullable=NO, default=-)
+  created_time : timestamp with time zone (nullable=YES, default=-)
+  last_updated : timestamp with time zone (nullable=YES, default=-)
+
+-- interviews --
+  id : uuid (nullable=NO, default=uuid_generate_v7())
+  notion_id : uuid (nullable=YES, default=-)
+  application_id : uuid (nullable=YES, default=-)
+  title : text (nullable=NO, default=-)
+  date : timestamp with time zone (nullable=YES, default=-)
+  duration_minutes : integer (nullable=YES, default=-)
+  interviewer : ARRAY (nullable=YES, default=-)
+  interview_location : text (nullable=YES, default=-)
+  client_name : text (nullable=YES, default=-)
+  calendar_group_email : text (nullable=YES, default=-)
+  email_language : text (nullable=YES, default=-)
+  event_id : text (nullable=YES, default=-)
+
+-- jobs --
+  id : uuid (nullable=NO, default=uuid_generate_v7())
+  notion_id : uuid (nullable=YES, default=-)
+  client_id : uuid (nullable=YES, default=-)
+  job_title : text (nullable=NO, default=-)
+  status : USER-DEFINED (nullable=YES, default=-)
+  location : text (nullable=YES, default=-)
+  min_salary : numeric (nullable=YES, default=-)
+  max_salary : numeric (nullable=YES, default=-)
+  currency : text (nullable=YES, default=-)
+  working_mode : ARRAY (nullable=YES, default=-)
+  bonus_based : text (nullable=YES, default=-)
+  priority : text (nullable=YES, default=-)
+  jd_text : text (nullable=YES, default=-)
+  jd_url : text (nullable=YES, default=-)
+  notes : text (nullable=YES, default=-)
+  assigned_to : ARRAY (nullable=YES, default=-)
+  created_time : timestamp with time zone (nullable=YES, default=-)
+  last_updated : timestamp with time zone (nullable=YES, default=-)
+  display_number : integer (nullable=NO, default=-)
+  display_id : text (nullable=YES, default=-)
+
+-- onboarding_history --
+  id : uuid (nullable=NO, default=gen_random_uuid())
+  candidate_id : uuid (nullable=YES, default=-)
+  job_id : uuid (nullable=YES, default=-)
+  job_title : text (nullable=YES, default=-)
+  company_name : text (nullable=YES, default=-)
+  description : text (nullable=YES, default=-)
+  starting_date : date (nullable=YES, default=-)
+  ending_date : date (nullable=YES, default=-)
+  currently_working : boolean (nullable=YES, default=-)
+
+-- pending_cv_imports --
+  id : uuid (nullable=NO, default=gen_random_uuid())
+  payload : jsonb (nullable=NO, default=-)
+  match_status : text (nullable=NO, default=-)
+  matched_candidate_id : uuid (nullable=YES, default=-)
+  matched_details : jsonb (nullable=YES, default=-)
+  status : text (nullable=YES, default='Pending'::text)
+  created_at : timestamp with time zone (nullable=YES, default=now())
+  resolved_at : timestamp with time zone (nullable=YES, default=-)
+
+-- reach_sourcing --
+  id : uuid (nullable=NO, default=uuid_generate_v7())
+  notion_id : uuid (nullable=YES, default=-)
+  candidate_id : uuid (nullable=YES, default=-)
+  job_id : uuid (nullable=YES, default=-)
+  summary : text (nullable=NO, default=-)
+  status : text (nullable=YES, default=-)
+  stage : text (nullable=YES, default=-)
+  channel : text (nullable=YES, default=-)
+  result : text (nullable=YES, default=-)
+  priority : text (nullable=YES, default=-)
+  place : text (nullable=YES, default=-)
+  reason_failed_or_canceled : text (nullable=YES, default=-)
+  due_date : date (nullable=YES, default=-)
+  note : text (nullable=YES, default=-)
+  note_failure_or_cancelation : text (nullable=YES, default=-)
+  assigned_to : ARRAY (nullable=YES, default=-)
+  parent_task_notion_id : uuid (nullable=YES, default=-)
+  parent_task_id : uuid (nullable=YES, default=-)
+  parent_item_notion_id : uuid (nullable=YES, default=-)
+  parent_item_id : uuid (nullable=YES, default=-)
+  created_time : timestamp with time zone (nullable=YES, default=-)
+
+-- social_group_urls --
+  id : uuid (nullable=NO, default=uuid_generate_v7())
+  notion_id : uuid (nullable=YES, default=-)
+  name : text (nullable=NO, default=-)
+  url : text (nullable=YES, default=-)
+  group_type : ARRAY (nullable=YES, default=-)
+  created_time : timestamp with time zone (nullable=YES, default=-)
+
+=== FOREIGN KEYS (schema sandbox) ===
+Result(6) [
+  {
+    table_name: 'activity',
+    column_name: 'parent_item_id',
+    foreign_table_name: 'activity',
+    foreign_column_name: 'id',
+    delete_rule: 'SET NULL'
+  },
+  {
+    table_name: 'activity_log',
+    column_name: 'application_id',
+    foreign_table_name: 'activity',
+    foreign_column_name: 'id',
+    delete_rule: 'CASCADE'
+  },
+  {
+    table_name: 'jobs',
+    column_name: 'client_id',
+    foreign_table_name: 'clients',
+    foreign_column_name: 'id',
+    delete_rule: 'SET NULL'
+  },
+  {
+    table_name: 'activity',
+    column_name: 'job_id',
+    foreign_table_name: 'jobs',
+    foreign_column_name: 'id',
+    delete_rule: 'CASCADE'
+  },
+  {
+    table_name: 'activity',
+    column_name: 'candidate_id',
+    foreign_table_name: 'candidates',
+    foreign_column_name: 'id',
+    delete_rule: 'CASCADE'
+  },
+  {
+    table_name: 'contact_points',
+    column_name: 'candidate_id',
+    foreign_table_name: 'candidates',
+    foreign_column_name: 'id',
+    delete_rule: 'CASCADE'
+  }
+]
