@@ -2468,7 +2468,7 @@ Tài liệu này ghi chép chi tiết từng mốc phát triển, các thay đ�
 - Verify:
   - Test 1 (Text-based PDF - CV_18_Nguyen_Van_A_18.pdf): Tạo thành công ứng viên `Nguyen Van A 18` (display_number 11829), 3 contact points, notification type `cv_single_import` severity `success` (201 Created) — PASS.
   - Test 2 (Scanned PDF OCR - CV_25_Nguyen_Van_A_25.pdf): Subworkflow OCR nhận diện văn bản qua Gemini 2.5 Flash trong 5.2s, tạo ứng viên `Nguyen Van A` (display_number 11830), 3 contact points, notification severity `success` (201 Created) — PASS.
-  - Test 3 (Duplicate PDF - CV_01_Vo_Hong_Tuan_Update_V1.pdf): Dedup route phát hiện trùng SĐT/Email, đưa vào `7c7dcf4_cv_imports` (id `932e871f-b54a-40ac-bd56-eb1cef7f8db4`), tạo notification severity `warning` ("Pending Approval: Vo Hong Tuan") — PASS.
+  - Test 3 (Duplicate PDF - CV_01_Test_Candidate_H_Update_V1.pdf): Dedup route phát hiện trùng SĐT/Email, đưa vào `7c7dcf4_cv_imports` (id `932e871f-b54a-40ac-bd56-eb1cef7f8db4`), tạo notification severity `warning` ("Pending Approval: Vo Hong Tuan") — PASS.
   - Next.js build: Turbopack compile PASS trong 1.0s không có lint error.
 - ⚠️ Sai lệch so với spec:
   - Spec gốc yêu cầu: Subworkflow OCR chạy lệnh CLI `pdftoppm -png -r 200` để cắt trang ảnh trước khi gọi Gemini API.
@@ -2484,7 +2484,7 @@ Tài liệu này ghi chép chi tiết từng mốc phát triển, các thay đ�
 - Verify:
   - Test 1 (CV_18_Nguyen_Van_A_18.pdf): Candidate `Nguyen Van A 18` (ID `01a060aa-9b89-4d2f-b020-aee719c6bdf4`, `display_number: 11831`), 3 contact points, Notification `01a060aa-9eb3-46a8-be3e-e13d756dfeed` (`severity: success`) — PASS & PERSISTED.
   - Test 2 (CV_25_Nguyen_Van_A_25.pdf - OCR): Subworkflow hoàn thành trong 4.4s, Candidate `Nguyen Van A` (ID `01a060ab-3ddf-22e6-a55f-39279ed14d3c`, `display_number: 11832`), 3 contact points, Notification `01a060ab-40bd-3ca7-9359-4b64706cd9b1` (`severity: success`) — PASS & PERSISTED.
-  - Test 3 (CV_01_Vo_Hong_Tuan_Update_V1.pdf - HITL): Pending Import `df93c62a-4da1-4071-854b-21186ae5d1f1` (`match_status: UPDATE`, target candidate `009ec424-cdcc-4dec-8fd7-999a5aaaa1e5`), Notification `01a060ab-bbae-41ae-8576-3bc7bd593985` (`severity: warning`) — PASS & PERSISTED.
+  - Test 3 (CV_01_Test_Candidate_H_Update_V1.pdf - HITL): Pending Import `df93c62a-4da1-4071-854b-21186ae5d1f1` (`match_status: UPDATE`, target candidate `00000000-0000-4000-8000-000000000008`), Notification `01a060ab-bbae-41ae-8576-3bc7bd593985` (`severity: warning`) — PASS & PERSISTED.
 - ⚠️ Sai lệch so với spec:
   - Spec gốc yêu cầu: Node HTTP Request trên n8n dùng biểu thức `{{ $env.ATS_APP_BASE_URL }}` và `{{ $env.GEMINI_API_KEY }}` để cấu hình động URL và API key.
   - Lỗi gặp phải: n8n engine trên VPS được khởi chạy với cờ bảo mật `N8N_BLOCK_ENV_ACCESS_IN_NODE=true`, khiến mọi biểu thức chứa `$env` trong HTTP Request parameter bị n8n ném ngoại lệ `ExpressionError: access to env vars denied` và crash ngay lập tức.
@@ -2520,7 +2520,7 @@ Tài liệu này ghi chép chi tiết từng mốc phát triển, các thay đ�
   - Test 1 (Batch Upload 3 files: B1-01 NEW, B1-02 UPDATE, B1-06 CONFLICT): Form trigger nhận 3 file ➔ `cv_import_batches` row created (`total_files: 3, status: 'completed'`) ➔ 3 execution subworkflow chạy thành công (Exec #94, #95, #96) ➔ Item 1 tạo Candidate NEW (display_number 11833), Item 2 tạo Pending UPDATE (`cb1153c0-...`), Item 3 tạo Pending CONFLICT (`e6fd8673-...`) ➔ Notification tổng kết 1 NEW, 1 UPDATE, 1 CONFLICT — PASS & PERSISTED.
   - Test 2 (Google Drive File Rename): Scanned PDF B2-01 (Exec #102) & PDF CV_37 (Exec #105) ➔ Webhook trả match_status NEW ➔ Google Drive API PATCH đổi tên file thật trên Drive thành `CV_11835_1.pdf` — PASS.
   - Test 3 (HITL Server Actions & Merge Engine): 
-    - MERGE: Cập nhật Candidate #11068 (Đặng Hải Trang) với address mới, notes mới, thêm contact point email mới, và bổ sung CV vào `cv_urls` với tên `CV_11068_1.pdf` — PASS.
+    - MERGE: Cập nhật Candidate #11068 (Test Candidate F) với address mới, notes mới, thêm contact point email mới, và bổ sung CV vào `cv_urls` với tên `CV_11068_1.pdf` — PASS.
     - FORCE_CREATE: Bấm "Create New Profile" cho conflict 7c7dcf4 import `e6fd8673-...` ➔ Tạo thành công Candidate mới #11837 ("Ambiguous Person Conflict Clean") kèm `cv_urls` `CV_11837_1.pdf` — PASS.
   - Test 4 (Stuck Batch Auto-Resume): Tạo stuck batch 15 phút trước với item queued ➔ Kích hoạt `WfResume00000001` (Exec #115) ➔ Subworkflow Exec #116 xử lý item thành `done` ➔ Batch tự động chuyển sang `status: 'completed'` — PASS.
 - ⚠️ Sai lệch so với spec:

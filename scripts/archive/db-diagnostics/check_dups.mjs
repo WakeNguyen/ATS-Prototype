@@ -5,7 +5,7 @@ async function checkDups() {
     SELECT cp.value AS phone, c.display_number, c.full_name, c.id AS candidate_id
     FROM public.contact_points cp
     JOIN public.candidates c ON cp.candidate_id = c.id
-    WHERE cp.value IN ('+84768104818', '+84822201930')
+    WHERE cp.value IN ('+84900000307', '+84900000308')
     ORDER BY cp.value;
   `;
   console.log(dups);

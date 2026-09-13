@@ -336,7 +336,7 @@ Xác nhận đúng như yêu cầu: nhánh TRUE nối tiếp `Download CV from D
 
 **→ KẾT LUẬN: Phase 2 (Batch upload + Resume + 3-case dedup + Drive naming) đã PASS toàn bộ PHẦN F-K.** Trước khi đưa vào dùng thật (không còn là test), cần làm nốt 2 việc vận hành (không phải lỗi code, đã ghi trong checklist bên dưới):
 1. Đổi node Upload (workflow chính) VÀ node Rename (`WfRename00000001`, `WfSingle00000001`) trỏ lại đúng folder Candidate thật — hiện đang trỏ `Temp Candidate Folder (for testing)`.
-2. Revert mutation test blacklist trên `sandbox.candidates` id `5e06d076-3a59-4275-be51-702c70fc9f61` (xem ghi chú ở Test Data Matrix Phase 2).
+2. Revert mutation test blacklist trên `sandbox.candidates` id `00000000-0000-4000-8000-000000000003` (xem ghi chú ở Test Data Matrix Phase 2).
 
 ---
 
@@ -346,8 +346,8 @@ User tự tay test MERGE trên UI thật, phát hiện "Contact Points Hub (7)" 
 
 ### L.1 — Tái hiện + xác nhận nguyên nhân gốc
 
-Truy vấn `sandbox.contact_points` cho candidate `display_number=11281` ("Vo Hong Tuan", id `009ec424-cdcc-4dec-8fd7-999a5aaaa1e5`) trả về 7 dòng thay vì 4:
-- 3 dòng gốc, tạo `2026-08-31 14:52:55` (Email, Phone `+84993279795`, LinkedIn).
+Truy vấn `sandbox.contact_points` cho candidate `display_number=11281` ("Vo Hong Tuan", id `00000000-0000-4000-8000-000000000008`) trả về 7 dòng thay vì 4:
+- 3 dòng gốc, tạo `2026-08-31 14:52:55` (Email, Phone `+84900000301`, LinkedIn).
 - 1 dòng hợp lệ, tạo `2026-09-02 09:11:15` (Phone `+8490000001` — số mới thật).
 - 3 dòng TRÙNG, tạo CÙNG 1 thời điểm `2026-09-02 10:27:00.568` (LinkedIn, Email, Phone `+8490000001` — cả 3 đều đã tồn tại từ trước, bị chèn lại).
 
@@ -405,7 +405,7 @@ Quan trọng: sửa ở SERVER (không sửa ở client `PendingCVClientWrapper.
 
 ### L.4 — Dọn dữ liệu test: xoá 3 dòng `contact_points` trùng đã tạo trong `sandbox`
 
-Chỉ áp dụng cho `sandbox` schema (không đụng `public`), xoá đúng 3 dòng trùng tạo lúc `2026-09-02 10:27:00.568` cho candidate `009ec424-cdcc-4dec-8fd7-999a5aaaa1e5`, GIỮ NGUYÊN 3 dòng gốc + 1 dòng hợp lệ đã thêm trước đó:
+Chỉ áp dụng cho `sandbox` schema (không đụng `public`), xoá đúng 3 dòng trùng tạo lúc `2026-09-02 10:27:00.568` cho candidate `00000000-0000-4000-8000-000000000008`, GIỮ NGUYÊN 3 dòng gốc + 1 dòng hợp lệ đã thêm trước đó:
 
 ```sql
 DELETE FROM sandbox.contact_points
@@ -415,7 +415,7 @@ WHERE id IN (
   '01a061a8-67eb-7a62-a2a2-cee2c0910419'  -- Phone +8490000001 (dup)
 );
 ```
-Sau khi xoá, candidate này phải còn lại đúng 4 dòng `contact_points` (Email, Phone `+84993279795`, LinkedIn gốc + Phone `+8490000001` hợp lệ). Claude sẽ tự chạy câu SQL này qua Supabase MCP ngay (không cần đợi AG), vì đây thuần là dọn dữ liệu test trong `sandbox`, không phải thay đổi code.
+Sau khi xoá, candidate này phải còn lại đúng 4 dòng `contact_points` (Email, Phone `+84900000301`, LinkedIn gốc + Phone `+8490000001` hợp lệ). Claude sẽ tự chạy câu SQL này qua Supabase MCP ngay (không cần đợi AG), vì đây thuần là dọn dữ liệu test trong `sandbox`, không phải thay đổi code.
 
 **Việc AG cần làm:** (1) sửa `hitl_actions.js` theo L.2; (2) sau khi sửa xong, test lại: tạo 2 pending import mới cho cùng 1 candidate với `contactPoints` giống hệt nhau, resolve theo đúng thứ tự NGƯỢC với thứ tự tạo (giống kịch bản thật vừa xảy ra), xác nhận lần resolve thứ 2 KHÔNG thêm dòng `contact_points` nào mới; (3) ghi vào `DEVELOPMENT_LOG.md` như thường lệ (cả bảng tổng hợp lẫn chi tiết).
 
