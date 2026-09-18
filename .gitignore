@@ -1,0 +1,25 @@
+node_modules/
+.next/
+.env
+.env.local
+.env*.local
+.env*
+.backups/
+*.tmp
+.log
+npm-debug.log
+docs/testing/test data/
+docs/secrets/
+Claude outputs/
+scripts/social-group-titles/
+.vercel/
+
+# AI Collab History (log trao doi Claude<->Antigravity qua bridge) CHI duoc luu cuc bo
+# ben NGOAI repo nay (thu muc cha cua worktree, vd D:\Users\Orchestrator\AI Collab History\
+# hoac D:\Users\trith\AI Collab History\) - KHONG BAO GIO duoc commit vao Git du o bat ky
+# nhanh nao. Rule nay la hang rao ky thuat sau su co 2026-09-13: 1 secret VPS dang active
+# (BRIDGE_INTERNAL_SECRET) bi lo do vo tinh commit nham 1 file snapshot cua thu muc nay
+# vao master (commit d1a69ff, da go bo o 50edb8b + rotate lai secret ngay sau do).
+AI Collab History/
+
+!.env.example
